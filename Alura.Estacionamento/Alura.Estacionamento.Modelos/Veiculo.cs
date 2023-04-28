@@ -5,7 +5,8 @@ using System.Collections.Generic;
 
 namespace Alura.Estacionamento.Modelos
 {
-    public class Veiculo
+    // Implementing the interface so that We can test more objects with more facilities
+    public class Veiculo : IEnumerable<object[]>
     {
         //Campos    
         private string _placa;
@@ -95,6 +96,23 @@ namespace Alura.Estacionamento.Modelos
            Proprietario = proprietario;
         }
 
-       
+        // Implementing the interface method
+        public IEnumerator<object[]> GetEnumerator()
+        {
+            yield return new object[]
+            {
+                new Veiculo
+                {
+                    Proprietario = "André Silva",
+                    Placa = "ASD-9999",
+                    Cor="Verde",
+                    Modelo="Fusca"
+                }
+            };
+        }
+
+        // From interface
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+
     }
 }

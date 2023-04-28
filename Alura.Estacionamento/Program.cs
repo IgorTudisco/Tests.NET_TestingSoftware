@@ -79,8 +79,10 @@ namespace Alura.Estacionamento
         static void RegistrarEntradaMotocicleta()
         {
             Console.WriteLine("Dados da Motocicleta");
-            Veiculo moto = new Veiculo();
-            moto.Tipo = TipoVeiculo.Motocicleta;
+            Veiculo moto = new Veiculo
+            {
+                Tipo = TipoVeiculo.Motocicleta
+            };
             //preeencher placa,cor,hora,entrada e proprietário
             Console.Write("Digite os dados da placa (XXX-9999): ");
             try
@@ -109,8 +111,10 @@ namespace Alura.Estacionamento
         static void RegistrarEntradaAutomovel()
         {
             Console.WriteLine("Dados do Automovél");
-            Veiculo carro = new Veiculo();
-            carro.Tipo = TipoVeiculo.Automovel;
+            Veiculo carro = new Veiculo
+            {
+                Tipo = TipoVeiculo.Automovel
+            };
             //preeencher placa,cor,hora,entrada e proprietário.
             Console.Write("Digite os dados da placa (XXX-9999): ");
             try
