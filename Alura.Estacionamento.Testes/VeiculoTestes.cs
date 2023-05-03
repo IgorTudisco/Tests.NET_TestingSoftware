@@ -1,6 +1,9 @@
 using Alura.Estacionamento.Alura.Estacionamento.Modelos;
 using Alura.Estacionamento.Modelos;
 using System;
+using System.Numerics;
+using System.Reflection;
+using System.Runtime.ConstrainedExecution;
 using Xunit;
 
 namespace Alura.Estacionamento.Testes
@@ -81,6 +84,7 @@ namespace Alura.Estacionamento.Testes
          * polluting our test class
          */
         [Theory (DisplayName = "Teste nº 7")]
+        [Trait("Funcionalidade/Dados", "Placa")]
         [ClassData(typeof(Veiculo))]        
         public void TestaVeiculoClass(Veiculo modelo)
         {
@@ -93,6 +97,30 @@ namespace Alura.Estacionamento.Testes
 
             //Assert
             Assert.Equal(modelo.VelocidadeAtual, veiculo.VelocidadeAtual);
+        }
+
+        [Theory (DisplayName = "Teste nº 8")]
+        [Trait ("Funcionalidade", "Dados")]
+        [InlineData("Amanda", "ASG-1525", "Azul", "Civic", TipoVeiculo.Automovel)]
+        public void DadosVeiculo(string nome, string placa, string cor, string modelo, object tipo)
+        {
+
+            // Arrange
+            var veiculo = new Veiculo
+            {
+                Proprietario = nome,
+                Tipo = (TipoVeiculo)tipo,
+                Cor = cor,
+                Modelo = modelo,
+                Placa = placa
+            };
+
+            // Act
+            string dados = veiculo.ToString();
+
+            // Assert
+            Assert.Contains("Ficha do veículo:", dados);
+
         }
 
     }
