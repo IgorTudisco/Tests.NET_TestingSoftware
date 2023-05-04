@@ -84,7 +84,7 @@ namespace Alura.Estacionamento.Testes
 
         [Theory]
         [InlineData("igor", "ASD-1625", "Preto", "Veyron", TipoVeiculo.Automovel)]
-        public void LocalizaVeiculoNoPatioComBaseNaPlaca(string nome, string placa, string cor, string modelo, object tipo)
+        public void LocalizaVeiculoNoPatioComBaseNoId(string nome, string placa, string cor, string modelo, object tipo)
         {
             // Arrange
             Veiculo.Proprietario = nome;
@@ -95,10 +95,10 @@ namespace Alura.Estacionamento.Testes
             Estacionamento.RegistrarEntradaVeiculo(Veiculo);
 
             //Act
-            var consultado = Estacionamento.PesquisaVeiculo(placa);
+            var consultado = Estacionamento.PesquisaVeiculo(Veiculo.IdTicket);
 
             //Assert
-            Assert.Equal(placa, consultado.Placa);
+            Assert.Contains("### Ticket do Estacionamento ### \n", consultado.Ticket);
         }
 
         [Theory]
@@ -133,5 +133,6 @@ namespace Alura.Estacionamento.Testes
         {
             SaidaConsoleTeste.WriteLine("Dispose invocado.\n");
         }
+
     }
 }

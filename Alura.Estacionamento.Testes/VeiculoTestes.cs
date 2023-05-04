@@ -128,5 +128,47 @@ namespace Alura.Estacionamento.Testes
 
         }
 
+        [Fact]
+        public void TestaNomeDoProprietarioVeiculoComMenosDeTresCaracteres()
+        {
+            // Arrange
+            string nomeProprietario = "Ig";
+
+            // Assert
+            Assert.Throws<System.FormatException>(
+                // Act
+                () => new Veiculo(nomeProprietario)                
+            );
+        }
+
+        [Fact]
+        public void TestaMensagemDeExcecaoDoQuartoCaractereDaPlaca()
+        {
+            // Arrange
+            string placa = "GHTD1236";
+
+            // Act
+            var mensagem = Assert.Throws<System.FormatException>(
+                () => new Veiculo().Placa = placa
+            );
+
+            // Assert
+            Assert.Equal("O 4° caractere deve ser um hífen", mensagem.Message);
+        }
+
+        [Fact]
+        public void TestaUltimosCaracteresPlacaVeiculoComoNumeros()
+        {
+            // Arrange
+            string placaFormatoErro = "FGT-125F";
+
+            // Assert
+            Assert.Throws<System.FormatException>(
+                // Act
+                () => new Veiculo().Placa = placaFormatoErro
+            );
+
+        }
+
     }
 }
