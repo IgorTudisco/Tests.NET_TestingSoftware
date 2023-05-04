@@ -12,31 +12,42 @@ using System.Runtime.ConstrainedExecution;
 using System.Text;
 using System.Threading.Tasks;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace Alura.Estacionamento.Testes
 {
-    public class PatioTestes
+    // The IDisposable helps us reuse code and clean your data after running the test methods.
+    public class PatioTestes: IDisposable
     {
-        [Fact(DisplayName = "Teste 1º")]
-        [Trait("Funcinalidade", "Faturamento")]
-        public void ValidaFaturamento()
+        private readonly Patio Estacionamento;
+        private readonly Veiculo Veiculo;
+        public ITestOutputHelper SaidaConsoleTeste;
+
+        public PatioTestes(ITestOutputHelper _saidaConsoleTeste)
+        {
+            // Verify if all methods call the constructor
+            SaidaConsoleTeste = _saidaConsoleTeste;
+            SaidaConsoleTeste.WriteLine("Execução do construtor..\n");
+            // Arrange 
+            this.Veiculo = new Veiculo();
+            this.Estacionamento = new Patio();
+        }
+
+        [Fact]
+        public void ValidaFaturamentoDoEstacionamentoComUmVeiculo()
         {
             // Arrange
-            var estacionamento = new Patio();
-            var veiculo = new Veiculo
-            {
-                Proprietario = "Igor",
-                Tipo = TipoVeiculo.Automovel,
-                Cor = "vermelho",
-                Modelo = "Ferrari",
-                Placa = "abc-1245"
-            };
+            Veiculo.Proprietario = "Igor";
+            Veiculo.Tipo = TipoVeiculo.Automovel;
+            Veiculo.Cor = "vermelho";
+            Veiculo.Modelo = "Ferrari";
+            Veiculo.Placa = "abc-1245";
 
-            estacionamento.RegistrarEntradaVeiculo(veiculo);
-            estacionamento.RegistrarSaidaVeiculo(veiculo.Placa);
+            Estacionamento.RegistrarEntradaVeiculo(Veiculo);
+            Estacionamento.RegistrarSaidaVeiculo(Veiculo.Placa);
 
             //Act
-            double faturamento = estacionamento.TotalFaturado();
+            double faturamento = Estacionamento.TotalFaturado();
 
             //Assert
             Assert.Equal(2, faturamento);
@@ -51,69 +62,56 @@ namespace Alura.Estacionamento.Testes
         [InlineData("Tainá", "DFD-1629", "Vermelho", "Corola", TipoVeiculo.Automovel)]
         [InlineData("Yuri", "ATR-8452", "Prata", "Ferrari", TipoVeiculo.Automovel)]
         [InlineData("Carol", "ATR-8992", "Prata", "S-10", TipoVeiculo.Automovel)]
-        public void ValidaFaturamentoComVariosVeiculos(string nome, string placa, string cor, string modelo, object tipo)
+        public void ValidaFaturamentoDoEstacionamentoComVariosVeiculos(string nome, string placa, string cor, string modelo, object tipo)
         {
             // Arrange
-            var estacionamento = new Patio();
-            var veiculo = new Veiculo
-            {
-                Proprietario = nome,
-                Tipo = (TipoVeiculo)tipo,
-                Cor = cor,
-                Modelo = modelo,
-                Placa = placa
-            };
+            Veiculo.Proprietario = nome;
+            Veiculo.Tipo = (TipoVeiculo)tipo;
+            Veiculo.Cor = cor;
+            Veiculo.Modelo = modelo;
+            Veiculo.Placa = placa;
 
-            estacionamento.RegistrarEntradaVeiculo(veiculo);
-            estacionamento.RegistrarSaidaVeiculo(veiculo.Placa);
+
+            Estacionamento.RegistrarEntradaVeiculo(Veiculo);
+            Estacionamento.RegistrarSaidaVeiculo(Veiculo.Placa);
 
             //Act
-            double faturamento = estacionamento.TotalFaturado();
+            double faturamento = Estacionamento.TotalFaturado();
 
             //Assert
             Assert.Equal(2, faturamento);
         }
 
-        [Theory (DisplayName = "Teste 3º")]
-        [Trait("Funcinalidade", "Pátio")]
+        [Theory]
         [InlineData("igor", "ASD-1625", "Preto", "Veyron", TipoVeiculo.Automovel)]
-        public void LocalizaVeiculoPatio(string nome, string placa, string cor, string modelo, object tipo)
+        public void LocalizaVeiculoNoPatioComBaseNaPlaca(string nome, string placa, string cor, string modelo, object tipo)
         {
             // Arrange
-            var estacionamento = new Patio();
-            var veiculo = new Veiculo
-            {
-                Proprietario = nome,
-                Tipo = (TipoVeiculo)tipo,
-                Cor = cor,
-                Modelo = modelo,
-                Placa = placa
-            };
-            estacionamento.RegistrarEntradaVeiculo(veiculo);
+            Veiculo.Proprietario = nome;
+            Veiculo.Tipo = (TipoVeiculo)tipo;
+            Veiculo.Cor = cor;
+            Veiculo.Modelo = modelo;
+            Veiculo.Placa = placa;
+            Estacionamento.RegistrarEntradaVeiculo(Veiculo);
 
             //Act
-            var consultado = estacionamento.PesquisaVeiculo(placa);
+            var consultado = Estacionamento.PesquisaVeiculo(placa);
 
             //Assert
             Assert.Equal(placa, consultado.Placa);
         }
 
-        [Theory (DisplayName = "Teste 4º")]
-        [Trait ("Funcionalidade", "Alteração")]
+        [Theory]
         [InlineData("Amanda", "ASG-1525", "Azul", "Civic", TipoVeiculo.Automovel)]
-        public void AlteraDadosVeiculo(string nome, string placa, string cor, string modelo, object tipo)
+        public void AlteraDadosDoProprioVeiculo(string nome, string placa, string cor, string modelo, object tipo)
         {
             // Arrange
-            var estacionamento = new Patio();
-            var veiculo = new Veiculo
-            {
-                Proprietario = nome,
-                Tipo = (TipoVeiculo)tipo,
-                Cor = cor,
-                Modelo = modelo,
-                Placa = placa
-            };
-            estacionamento.RegistrarEntradaVeiculo(veiculo);
+            Veiculo.Proprietario = nome;
+            Veiculo.Tipo = (TipoVeiculo)tipo;
+            Veiculo.Cor = cor;
+            Veiculo.Modelo = modelo;
+            Veiculo.Placa = placa;
+            Estacionamento.RegistrarEntradaVeiculo(Veiculo);
 
             var veiculoAlterado = new Veiculo
             {
@@ -125,10 +123,15 @@ namespace Alura.Estacionamento.Testes
             };
 
             //Act
-            var veiculoNovo = estacionamento.AlterarVeiculo(veiculoAlterado);
+            var veiculoNovo = Estacionamento.AlterarVeiculo(veiculoAlterado);
 
             //Assert
             Assert.Equal(veiculoNovo.Cor, veiculoAlterado.Cor);
+        }
+
+        public void Dispose()
+        {
+            SaidaConsoleTeste.WriteLine("Dispose invocado.\n");
         }
     }
 }

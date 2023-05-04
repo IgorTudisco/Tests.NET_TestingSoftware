@@ -103,10 +103,10 @@ namespace Alura.Estacionamento.Modelos
             {
                 new Veiculo
                 {
-                    Proprietario = "André Silva",
-                    Placa = "ASD-9999",
-                    Cor="Verde",
-                    Modelo="Fusca"
+                    Proprietario = "Igor",
+                    Placa = "KGB-9999",
+                    Cor="Vermelho",
+                    Modelo="Ferrari"
                 }
             };
         }

@@ -5,41 +5,50 @@ using System.Numerics;
 using System.Reflection;
 using System.Runtime.ConstrainedExecution;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace Alura.Estacionamento.Testes
 {
     public class VeiculoTestes
     {
+        private readonly Veiculo Veiculo;
+        public ITestOutputHelper SaidaConsoleTeste;
+
+        public VeiculoTestes(ITestOutputHelper _saidaConsoleTeste)
+        {
+            // Verify if all methods call the constructor
+            SaidaConsoleTeste = _saidaConsoleTeste;
+            SaidaConsoleTeste.WriteLine("Execução do construtor..\n");
+            // Arrange 
+            this.Veiculo = new Veiculo();
+        }
+
         // Fact is an annotation of the Test
-        [Fact (DisplayName = "Teste nº 1")]
-        [Trait ("Funcionalidade", "Acelerar")]
-        public void TestaVeiculoAcelerar()
+        [Fact]
+        public void TestaVeiculoAcelerarComParametro10()
         {
             // pattern of Triple A or AAA
 
-            // Arrange - Sceneries preparation of tests
-            var veiculo = new Veiculo();
-            //Act - The method that I want to test
-            veiculo.Acelerar(10);
+            // Arrange - Sceneries preparation of tests (constructor)
+
+            // Act - The method that I want to test
+            Veiculo.Acelerar(10);
             // Assert - Results of my tests
-            Assert.Equal(100, veiculo.VelocidadeAtual);
+            Assert.Equal(100, Veiculo.VelocidadeAtual);
         }
 
-        [Fact (DisplayName = "Teste nº 2")]
-        [Trait ("Funcionalidade", "Frear")]
-        public void TestaVeiculoFrear()
-        {
-            // Arrange
-            var veiculo = new Veiculo();
+        [Fact]
+        public void TestaVeiculoFrearComParametro10()
+        {                       
             // Act
-            veiculo.Frear(10);
+            Veiculo.Frear(10);
             // Assert
-            Assert.Equal(-150, veiculo.VelocidadeAtual);
+            Assert.Equal(-150, Veiculo.VelocidadeAtual);
         }
 
-        [Fact (DisplayName = "Teste nº 3")]
-        [Trait("Funcionalidade", "Tipo")]
-        public void TestaVeiculoTipo()
+        [Fact (DisplayName = "Testa o tipo do veículo")]
+        [Trait("Funcionalidade", "Atributo tipo")]
+        public void TestaOTipoDoVeiculo()
         {
             var veiculo = new Veiculo
             {
@@ -48,9 +57,9 @@ namespace Alura.Estacionamento.Testes
             Assert.Equal(TipoVeiculo.Automovel, veiculo.Tipo);
         }
 
-        [Fact (DisplayName = "Teste nº 4")]
-        [Trait("Funcionalidade", "Placa")]
-        public void TestaVeiculoPlaca()
+        [Fact (DisplayName = "Testa a placa do Veículo")]
+        [Trait("Funcionalidade", "Atributo placa")]
+        public void TestaAPlacaDoVeiculo()
         {
             var veiculo = new Veiculo
             {
@@ -59,9 +68,9 @@ namespace Alura.Estacionamento.Testes
             Assert.Equal("odb-1245", veiculo.Placa);
         }
 
-        [Fact (DisplayName = "Teste nº 5")]
-        [Trait("Funcionalidade", "Placa")]
-        public void TestaVeiculoPlacaTamanho()
+        [Fact (DisplayName = "Testa o tamanho da placa do veiculo")]
+        [Trait("Método", "Verifica o tamanho da placa")]
+        public void TestaOTamanhoDaPlacaDoVeiculo()
         {
             var veiculo = new Veiculo
             {
@@ -72,8 +81,8 @@ namespace Alura.Estacionamento.Testes
             Assert.False(testaTamanho);
         }
 
-        [Fact (DisplayName = "Teste nº 6", Skip = "Teste ainda não implementado - Ignorar")]
-        public void ValidaNomeProprietario()
+        [Fact (Skip = "Teste ainda não implementado - Ignorar")]
+        public void ValidaNomeProprietarioDoVeiculo()
         {
 
         }
@@ -83,26 +92,22 @@ namespace Alura.Estacionamento.Testes
          * We can use the ClassData to test more objects without
          * polluting our test class
          */
-        [Theory (DisplayName = "Teste nº 7")]
-        [Trait("Funcionalidade/Dados", "Placa")]
+        [Theory (DisplayName = "Testa os dados direto da classe ")]
+        [Trait("ClassData", "Dados direto dá classe")]
         [ClassData(typeof(Veiculo))]        
-        public void TestaVeiculoClass(Veiculo modelo)
+        public void TestaODadoDoVeiculoPassandoElesDiretoDaClasse(Veiculo modelo)
         {
-            //Arrange
-            var veiculo = new Veiculo();
-
-            //Act
-            veiculo.Acelerar(10);
+            // Act
+            Veiculo.Acelerar(10);
             modelo.Acelerar(10);
 
-            //Assert
-            Assert.Equal(modelo.VelocidadeAtual, veiculo.VelocidadeAtual);
+            // Assert
+            Assert.Equal(modelo.VelocidadeAtual, Veiculo.VelocidadeAtual);
         }
 
-        [Theory (DisplayName = "Teste nº 8")]
-        [Trait ("Funcionalidade", "Dados")]
+        [Theory]
         [InlineData("Amanda", "ASG-1525", "Azul", "Civic", TipoVeiculo.Automovel)]
-        public void DadosVeiculo(string nome, string placa, string cor, string modelo, object tipo)
+        public void FichaDeInformacaoDoVeiculo(string nome, string placa, string cor, string modelo, object tipo)
         {
 
             // Arrange
