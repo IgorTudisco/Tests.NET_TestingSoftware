@@ -19,6 +19,8 @@ namespace Alura.Estacionamento.Modelos
         private List<Veiculo> veiculos;
         private double faturado;
         public double Faturado { get => faturado; set => faturado = value; }
+        private Operador _operadorPatio;
+        public Operador OperadorPatio { get => _operadorPatio; set => _operadorPatio = value; }
         public List<Veiculo> Veiculos { get => veiculos; set => veiculos = value; }       
         public double TotalFaturado()
         {
@@ -112,7 +114,8 @@ namespace Alura.Estacionamento.Modelos
                             "\n" +
                             $">>> Identificador: {veiculo.IdTicket} \n" +
                             $">>> Data e hora de entrada: {DateTime.Now} \n" +
-                            $">>> Placa do veiculo: {veiculo.Placa} \n";
+                            $">>> Placa do veículo: {veiculo.Placa} \n" +
+                            $">>> Operador patio: {this.OperadorPatio.Nome}";
             veiculo.Ticket = ticket;
 
             return ticket;

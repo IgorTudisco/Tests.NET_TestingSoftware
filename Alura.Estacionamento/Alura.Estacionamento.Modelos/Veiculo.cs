@@ -133,7 +133,7 @@ namespace Alura.Estacionamento.Modelos
         // From interface
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
-        public void AlterarDados(Veiculo veiculoAlterado)
+        internal void AlterarDados(Veiculo veiculoAlterado)
         {
             this.Proprietario = veiculoAlterado.Proprietario;
             this.Modelo = veiculoAlterado.Modelo;

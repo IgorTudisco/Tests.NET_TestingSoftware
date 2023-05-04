@@ -21,6 +21,7 @@ namespace Alura.Estacionamento.Testes
     {
         private readonly Patio Estacionamento;
         private readonly Veiculo Veiculo;
+        private readonly Operador Operador;
         public ITestOutputHelper SaidaConsoleTeste;
 
         public PatioTestes(ITestOutputHelper _saidaConsoleTeste)
@@ -31,6 +32,8 @@ namespace Alura.Estacionamento.Testes
             // Arrange 
             this.Veiculo = new Veiculo();
             this.Estacionamento = new Patio();
+            this.Operador = new Operador();
+            Operador.Nome = "Geovanna";
         }
 
         [Fact]
@@ -43,8 +46,9 @@ namespace Alura.Estacionamento.Testes
             Veiculo.Modelo = "Ferrari";
             Veiculo.Placa = "abc-1245";
 
+            Estacionamento.OperadorPatio = Operador;
             Estacionamento.RegistrarEntradaVeiculo(Veiculo);
-            Estacionamento.RegistrarSaidaVeiculo(Veiculo.Placa);
+            Estacionamento.RegistrarSaidaVeiculo(Veiculo.Placa);            
 
             //Act
             double faturamento = Estacionamento.TotalFaturado();
@@ -71,7 +75,7 @@ namespace Alura.Estacionamento.Testes
             Veiculo.Modelo = modelo;
             Veiculo.Placa = placa;
 
-
+            Estacionamento.OperadorPatio = Operador;
             Estacionamento.RegistrarEntradaVeiculo(Veiculo);
             Estacionamento.RegistrarSaidaVeiculo(Veiculo.Placa);
 
@@ -92,6 +96,7 @@ namespace Alura.Estacionamento.Testes
             Veiculo.Cor = cor;
             Veiculo.Modelo = modelo;
             Veiculo.Placa = placa;
+            Estacionamento.OperadorPatio = Operador;
             Estacionamento.RegistrarEntradaVeiculo(Veiculo);
 
             //Act
@@ -111,6 +116,7 @@ namespace Alura.Estacionamento.Testes
             Veiculo.Cor = cor;
             Veiculo.Modelo = modelo;
             Veiculo.Placa = placa;
+            Estacionamento.OperadorPatio = Operador;
             Estacionamento.RegistrarEntradaVeiculo(Veiculo);
 
             var veiculoAlterado = new Veiculo
@@ -129,10 +135,6 @@ namespace Alura.Estacionamento.Testes
             Assert.Equal(veiculoNovo.Cor, veiculoAlterado.Cor);
         }
 
-        public void Dispose()
-        {
-            SaidaConsoleTeste.WriteLine("Dispose invocado.\n");
-        }
-
+        public void Dispose() => SaidaConsoleTeste.WriteLine("Dispose invocado.\n");
     }
 }
